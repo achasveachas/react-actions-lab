@@ -1,1 +1,6 @@
-const app = "I don't do much.";
+const Spreadsheet = require('./components/Spreadsheet');
+const React = require('react')
+const ReactDOM = require('react-dom');
+
+const $main = document.getElementById('main');
+ReactDOM.render(<Spreadsheet />, $main);
