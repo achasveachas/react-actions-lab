@@ -1,37 +1,32 @@
 'use strict';
 
-function addColumn (ev) {
-  ev.preventDefault();
-
+function addColumn () {
   const updatedTable = this.state.table
-    .map(row => row.concat(''));
+    .map(row => [...row, '']);
 
   this.setState({
     table: updatedTable
   });
 }
 
-function addRow (ev) {
-  ev.preventDefault();
-
-  const columnCount = this.state.table[0].length;
-  const newRow = Array.from(Array(columnCount)).map(() => '');
-  const updatedTable = this.state.table.concat([newRow]);
-
+function addRow () {
   this.setState({
-    table: updatedTable
+    table: [
+      ...this.state.table,
+      this.state.table[0].map(() => '')
+    ]
   });
 }
 
-function changeCell (rowIndex, columnIndex, ev) {
-  const updatedRow = this.state.table[rowIndex].slice();
-  updatedRow.splice(columnIndex, 1, ev.target.value);
-
-  const updatedTable = this.state.table.slice()
-  updatedTable.splice(rowIndex, 1, updatedRow);
-
+function changeCell (rowIndex, columnIndex, cellValue) {
   this.setState({
-    table: updatedTable
+    table: this.state.table.map((row, index) => {
+      if (index === rowIndex) {
+        row[columnIndex] = cellValue;
+      }
+
+      return row;
+    })
   });
 }
 
@@ -47,12 +42,10 @@ function blurCell () {
   });
 }
 
-function removeRow (ev) {
-  ev.preventDefault();
-
+function removeRow () {
   if (this.state.table.length > 1) {
     const updatedTable = this.state.table
-      .slice(0, -1)
+      .slice(0, -1);
 
     this.setState({
       table: updatedTable
@@ -60,12 +53,10 @@ function removeRow (ev) {
   }
 }
 
-function removeColumn (ev) {
-  ev.preventDefault();
-
+function removeColumn () {
   if (this.state.table[0].length > 1) {
     const updatedTable = this.state.table
-      .map(row => row.slice(0, -1))
+      .map(row => row.slice(0, -1));
 
     this.setState({
       table: updatedTable
